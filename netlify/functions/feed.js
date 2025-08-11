@@ -10,7 +10,6 @@ const parser = new XMLParser({
 });
 
 function loadSources(){
-  // Resolve candidates for sources.json both locally (dev) and in Netlify (Lambda)
   const here = url.fileURLToPath(import.meta.url);
   const dir = path.dirname(here);
   const root = process.env.LAMBDA_TASK_ROOT || process.cwd();
@@ -18,7 +17,7 @@ function loadSources(){
     path.resolve(dir, "../../sources.json"),
     path.resolve(dir, "../sources.json"),
     path.resolve(root, "sources.json"),
-    "/var/task/sources.json" // AWS Lambda typical path
+    "/var/task/sources.json"
   ];
   for(const p of candidates){
     try{
@@ -26,7 +25,7 @@ function loadSources(){
         const raw = fs.readFileSync(p, "utf-8");
         return JSON.parse(raw);
       }
-    }catch(e){/* try next */}
+    }catch(e){ /* tenta próxima */ }
   }
   throw new Error("sources.json não encontrado. Verifique included_files no netlify.toml.");
 }
@@ -45,8 +44,8 @@ export async function handler(event) {
   }
 
   const page = Number(event.queryStringParameters?.page ?? "0");
-  const pageSize = Number(event.queryStringParameters?.pageSize ?? "10");
-  const days = Number(event.queryStringParameters?.days ?? "60"); // padrão: 60 dias (~2 meses)
+  const pageSize = Number(event.queryStringParameters?.pageSize ?? "12");
+  const days = Number(event.queryStringParameters?.days ?? "60"); // padrão ~2 meses
   const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
 
   try {
@@ -81,7 +80,7 @@ export async function handler(event) {
       })
     )).flat();
 
-    allItems.sort((a, b) => ( (b.pubDate ?? 0) - (a.pubDate ?? 0) ));
+    allItems.sort((a, b) => ((b.pubDate ?? 0) - (a.pubDate ?? 0)));
 
     const start = page * pageSize;
     const pageItems = allItems.slice(start, start + pageSize);
