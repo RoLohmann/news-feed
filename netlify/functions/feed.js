@@ -1,3 +1,4 @@
+
 import { XMLParser } from "fast-xml-parser";
 
 const parser = new XMLParser({
@@ -6,7 +7,6 @@ const parser = new XMLParser({
   allowBooleanAttributes: true,
 });
 
-// Load sources from the project root (bundled at deploy time)
 import fs from "node:fs";
 const sourcesPath = new URL("../../sources.json", import.meta.url);
 const sources = JSON.parse(fs.readFileSync(sourcesPath));
@@ -24,6 +24,8 @@ export async function handler(event) {
 
   const page = Number(event.queryStringParameters?.page ?? "0");
   const pageSize = Number(event.queryStringParameters?.pageSize ?? "10");
+  const days = Number(event.queryStringParameters?.days ?? "60"); // padrão: 60 dias (~2 meses)
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
 
   try {
     const allItems = (await Promise.all(
@@ -32,19 +34,25 @@ export async function handler(event) {
           const res = await fetch(src.feedUrl, { headers: { "User-Agent": "NetlifyFunction/1.0" } });
           const xml = await res.text();
           const json = parser.parse(xml);
-          const { items, titleKey } = extractItems(json);
-          // Normalize to a schema
+          const { items } = extractItems(json);
+
           const norm = items
-            .map((it) => ({
-              source: src.name || (json?.rss?.channel?.title ?? json?.feed?.title ?? "Fonte"),
-              title: it.title || it["media:title"] || it["dc:title"] || "(sem título)",
-              link: it.link?.href || it.link || it.guid || "#",
-              pubDate: parseDate(it.pubDate || it.published || it.updated),
-              image: pickImage(it),
-              summary: it.description || it.summary || it.content || "",
-            }))
-            // Filter only posts that mention Bolsonaro (title or summary)
-            .filter((x) => /bolsonaro/i.test(`${x.title} ${x.summary}`));
+            .map((it) => {
+              const pub = pickDate(it);
+              return {
+                source: src.name || (json?.rss?.channel?.title ?? json?.feed?.title ?? "Fonte"),
+                title: it.title || it["media:title"] || it["dc:title"] || "(sem título)",
+                link: it.link?.href || it.link || it.guid || "#",
+                pubDate: pub,
+                image: pickImage(it),
+                summary: it.description || it.summary || it["content:encoded"] || it.content || "",
+              };
+            })
+            // Apenas itens que mencionam "Bolsonaro"
+            .filter((x) => /bolsonaro/i.test(`${x.title} ${x.summary}`))
+            // Itens dos últimos N dias; se sem data, mantemos
+            .filter((x) => (x.pubDate ? x.pubDate >= cutoff : true));
+
           return norm;
         } catch (e) {
           console.error("Erro ao buscar/parsing", src.feedUrl, e.message);
@@ -53,10 +61,13 @@ export async function handler(event) {
       })
     )).flat();
 
-    // Sort newest first
-    allItems.sort((a,b) => (b.pubDate || 0) - (a.pubDate || 0));
+    // Ordena por mais novo; sem data no fim
+    allItems.sort((a, b) => {
+      const A = a.pubDate ?? 0;
+      const B = b.pubDate ?? 0;
+      return B - A;
+    });
 
-    // Paginate
     const start = page * pageSize;
     const pageItems = allItems.slice(start, start + pageSize);
 
@@ -75,35 +86,29 @@ export async function handler(event) {
   }
 }
 
-function parseDate(d){
-  if(!d) return Date.now();
-  const t = Date.parse(d);
-  return isNaN(t) ? Date.now() : t;
-}
-
 function extractItems(json){
-  // Handle common RSS/Atom shapes
   if(json?.rss?.channel?.item) return { items: toArray(json.rss.channel.item) };
   if(json?.feed?.entry) return { items: toArray(json.feed.entry) };
-  // Some sites put items at root
   if(json?.channel?.item) return { items: toArray(json.channel.item) };
   return { items: [] };
 }
 
 function toArray(x){ return Array.isArray(x) ? x : (x ? [x] : []); }
 
+function pickDate(it){
+  const cand = it.pubDate || it.published || it.updated || it["dc:date"];
+  if(!cand) return null;
+  const t = Date.parse(cand);
+  return Number.isFinite(t) ? t : null;
+}
+
 function pickImage(it){
-  // RSS enclosure
   if(it.enclosure?.url) return it.enclosure.url;
-  // media:content
   if(it["media:content"]?.url) return it["media:content"].url;
   if(Array.isArray(it["media:content"]) && it["media:content"][0]?.url) return it["media:content"][0].url;
-  // media:thumbnail
   if(it["media:thumbnail"]?.url) return it["media:thumbnail"].url;
-  // itunes:image, common in podcasts
   if(it["itunes:image"]?.href) return it["itunes:image"].href;
-  // content:encoded might include <img>
-  const html = it["content:encoded"] || it.content || "";
+  const html = it["content:encoded"] || it.content || it.description || "";
   const m = /<img[^>]+src=["']([^"']+)["']/i.exec(html);
   if(m) return m[1];
   return null;
