@@ -1,0 +1,16 @@
+{
+  "name": "bolsonaro-feed-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Static site – no build step'",
+    "start": "npx netlify-cli dev"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.4.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

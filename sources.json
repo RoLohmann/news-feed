@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Jovem Pan (site-wide)",
+    "feedUrl": "https://jovempan.com.br/feed"
+  },
+  {
+    "name": "Revista Oeste",
+    "feedUrl": "https://revistaoeste.com/feed/"
+  },
+  {
+    "name": "Gazeta do Povo — República (Política)",
+    "feedUrl": "https://www.gazetadopovo.com.br/feed/rss/republica.xml"
+  },
+  {
+    "name": "Pleno.News",
+    "feedUrl": "https://pleno.news/feed"
+  },
+  {
+    "name": "Brasil Paralelo (YouTube)",
+    "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKDjjeeBmdaiicey2nImISw"
+  }
+]
