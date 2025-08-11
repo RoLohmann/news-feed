@@ -1,6 +1,6 @@
 [
   {
-    "name": "Jovem Pan (site-wide)",
+    "name": "Jovem Pan (site)",
     "feedUrl": "https://jovempan.com.br/feed"
   },
   {
@@ -8,15 +8,27 @@
     "feedUrl": "https://revistaoeste.com/feed/"
   },
   {
-    "name": "Gazeta do Povo — República (Política)",
-    "feedUrl": "https://www.gazetadopovo.com.br/feed/rss/republica.xml"
-  },
-  {
     "name": "Pleno.News",
     "feedUrl": "https://pleno.news/feed"
   },
   {
-    "name": "Brasil Paralelo (YouTube)",
-    "feedUrl": "https://www.youtube.com/feeds/videos.xml?channel_id=UCKDjjeeBmdaiicey2nImISw"
+    "name": "Gazeta do Povo — República (Política)",
+    "feedUrl": "https://www.gazetadopovo.com.br/feed/rss/republica.xml"
+  },
+  {
+    "name": "Conexão Política",
+    "feedUrl": "https://www.conexaopolitica.com.br/feed/"
+  },
+  {
+    "name": "Renova Mídia",
+    "feedUrl": "https://renovamidia.com.br/feed/"
+  },
+  {
+    "name": "Gazeta Brasil",
+    "feedUrl": "https://gazetabrasil.com.br/feed/"
+  },
+  {
+    "name": "Diário do Poder",
+    "feedUrl": "https://diariodopoder.com.br/feed/"
   }
 ]

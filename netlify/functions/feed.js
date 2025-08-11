@@ -1,5 +1,7 @@
-
 import { XMLParser } from "fast-xml-parser";
+import fs from "node:fs";
+import path from "node:path";
+import url from "node:url";
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -7,9 +9,29 @@ const parser = new XMLParser({
   allowBooleanAttributes: true,
 });
 
-import fs from "node:fs";
-const sourcesPath = new URL("../../sources.json", import.meta.url);
-const sources = JSON.parse(fs.readFileSync(sourcesPath));
+function loadSources(){
+  // Resolve candidates for sources.json both locally (dev) and in Netlify (Lambda)
+  const here = url.fileURLToPath(import.meta.url);
+  const dir = path.dirname(here);
+  const root = process.env.LAMBDA_TASK_ROOT || process.cwd();
+  const candidates = [
+    path.resolve(dir, "../../sources.json"),
+    path.resolve(dir, "../sources.json"),
+    path.resolve(root, "sources.json"),
+    "/var/task/sources.json" // AWS Lambda typical path
+  ];
+  for(const p of candidates){
+    try{
+      if(fs.existsSync(p)){
+        const raw = fs.readFileSync(p, "utf-8");
+        return JSON.parse(raw);
+      }
+    }catch(e){/* try next */}
+  }
+  throw new Error("sources.json não encontrado. Verifique included_files no netlify.toml.");
+}
+
+const sources = loadSources();
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -48,9 +70,7 @@ export async function handler(event) {
                 summary: it.description || it.summary || it["content:encoded"] || it.content || "",
               };
             })
-            // Apenas itens que mencionam "Bolsonaro"
             .filter((x) => /bolsonaro/i.test(`${x.title} ${x.summary}`))
-            // Itens dos últimos N dias; se sem data, mantemos
             .filter((x) => (x.pubDate ? x.pubDate >= cutoff : true));
 
           return norm;
@@ -61,12 +81,7 @@ export async function handler(event) {
       })
     )).flat();
 
-    // Ordena por mais novo; sem data no fim
-    allItems.sort((a, b) => {
-      const A = a.pubDate ?? 0;
-      const B = b.pubDate ?? 0;
-      return B - A;
-    });
+    allItems.sort((a, b) => ( (b.pubDate ?? 0) - (a.pubDate ?? 0) ));
 
     const start = page * pageSize;
     const pageItems = allItems.slice(start, start + pageSize);
