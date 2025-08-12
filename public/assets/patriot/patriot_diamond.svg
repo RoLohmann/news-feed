@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 628">
+  <rect width="1200" height="628" fill="#FEDD00"/>
+  <polygon points="600,80 1080,314 600,548 120,314" fill="#009739"/>
+  <circle cx="600" cy="314" r="160" fill="#002776"/>
+  <text x="600" y="324" fill="#fff" text-anchor="middle" font-family="Montserrat,Arial" font-size="44">Voz do Brasil</text>
+</svg>

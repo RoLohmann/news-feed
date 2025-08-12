@@ -4,16 +4,27 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Voz do Brasil — Direita em Foco</title>
-    <meta name="description" content="Feed contínuo de notícias relacionadas a Bolsonaro." />
+    <meta name="description" content="As notícias mais recentes sobre Bolsonaro, centralizadas em um só lugar." />
+    <meta property="og:title" content="Voz do Brasil — Direita em Foco" />
+    <meta property="og:description" content="As últimas sobre Bolsonaro, de várias fontes em um feed leve." />
+    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- AdSense (substitua SEU_ID quando for aprovado) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=SEU_ID" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <header class="hero">
       <h1>Voz do Brasil — Direita em Foco</h1>
-      <p class="subtitle">Um feed contínuo de notícias sobre Bolsonaro, com fonte selecionável.</p>
+      <p class="subtitle">As notícias mais atuais sobre Bolsonaro, centralizadas aqui.</p>
+      <nav class="topnav">
+        <a href="/sobre.html">Sobre</a> ·
+        <a href="/contato.html">Contato</a> ·
+        <a href="/privacidade.html">Privacidade</a> ·
+        <a href="/editorial.html">Política Editorial</a>
+      </nav>
     </header>
 
     <main>
@@ -29,12 +40,17 @@
         <div class="content">
           <a class="title" target="_blank" rel="noopener"></a>
           <p class="meta"></p>
+          <div class="share">
+            <button class="share-btn" data-platform="whatsapp" title="WhatsApp">WhatsApp</button>
+            <button class="share-btn" data-platform="telegram" title="Telegram">Telegram</button>
+            <button class="share-btn" data-platform="x" title="X">X</button>
+          </div>
         </div>
       </article>
     </template>
 
     <footer class="footer">
-      <span>Feito para Netlify • Atualizado automaticamente dos feeds configurados • Fallback estático se necessário</span>
+      <span>Atualizado automaticamente • Fallback estático instantâneo • Feito para Netlify</span>
     </footer>
 
     <script type="module" src="/app.js"></script>
