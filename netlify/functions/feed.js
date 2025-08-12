@@ -24,9 +24,7 @@ export async function handler(event){
     const per = await Promise.all(SOURCES.map(async s=>{
       try{
         const r = await fetch(s.feedUrl, { headers:{ "User-Agent":"Mozilla/5.0", "Accept":"application/rss+xml, application/atom+xml, application/xml;q=0.9, */*;q=0.8" } });
-        const xml = await r.text();
-        const json = parser.parse(xml);
-        const items = extractItems(json).map(it => ({
+        const xml = await r.text(); const json = parser.parse(xml); const items = extractItems(json).map(it => ({
           source: s.name, title: it.title || it["media:title"] || "(sem título)",
           link: it.link?.href || it.link || it.guid || "#",
           pubDate: pickDate(it), image: pickImage(it), summary: it.description || it.summary || it["content:encoded"] || it.content || ""

@@ -1,61 +1,30 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Voz do Brasil — Direita em Foco</title>
-    <meta name="description" content="As notícias mais recentes sobre Bolsonaro, centralizadas em um só lugar." />
-    <meta property="og:title" content="Voz do Brasil — Direita em Foco" />
-    <meta property="og:description" content="As últimas sobre Bolsonaro, de várias fontes em um feed leve." />
-    <meta property="og:image" content="/assets/patriot/patriot_flag.svg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header class="hero">
-      <h1>Voz do Brasil — Direita em Foco</h1>
-      <p class="subtitle">As notícias mais atuais sobre Bolsonaro, centralizadas aqui.</p>
-      <nav class="topnav">
-        <a href="/sobre.html">Sobre</a> ·
-        <a href="/contato.html">Contato</a> ·
-        <a href="/privacidade.html">Privacidade</a> ·
-        <a href="/editorial.html">Política Editorial</a>
-      </nav>
-    </header>
 
-    <main>
-      <section id="feed" class="feed"></section>
-      <div id="sentinel" class="sentinel" aria-hidden="true"></div>
-    </main>
-
-    <template id="card-template">
-      <article class="card">
-        <a class="image-link" target="_blank" rel="noopener">
-          <img class="thumb" alt="Imagem da notícia" loading="lazy">
-        </a>
-        <div class="content">
-          <a class="title" target="_blank" rel="noopener"></a>
-          <p class="meta"></p>
-          <div class="share">
-            <button class="share-btn" data-platform="native" title="Compartilhar">Compartilhar</button>
-            <button class="share-btn" data-platform="whatsapp" title="WhatsApp">WhatsApp</button>
-            <button class="share-btn" data-platform="telegram" title="Telegram">Telegram</button>
-            <button class="share-btn" data-platform="x" title="X">X</button>
-            <button class="share-btn" data-platform="facebook" title="Facebook">Facebook</button>
-            <button class="share-btn" data-platform="linkedin" title="LinkedIn">LinkedIn</button>
-            <button class="share-btn" data-platform="reddit" title="Reddit">Reddit</button>
-            <button class="share-btn" data-platform="email" title="E-mail">E-mail</button>
-            <button class="share-btn" data-platform="copy" title="Copiar link">Copiar</button>
-          </div>
-          <small class="ig-note">Instagram não permite compartilhamento de links via web; use “Copiar” e cole no seu story/post.</small>
-        </div>
-      </article>
-    </template>
-
-    <footer class="footer">
-      <span>Atualizado automaticamente • Fallback estático instantâneo • Feito para Netlify</span>
-    </footer>
-
-    <script type="module" src="/app.js"></script>
-  </body>
-</html>
+<!doctype html><html lang="pt-br"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Voz do Brasil — Direita em Foco</title>
+<link rel="stylesheet" href="/styles.css"/>
+</head><body>
+<header class="hero"><h1>Voz do Brasil — Direita em Foco</h1><p class="subtitle">Feed contínuo de notícias sobre Bolsonaro.</p></header>
+<main><section id="feed" class="feed"></section><div id="sentinel" class="sentinel" aria-hidden="true"></div></main>
+<template id="card-template"><article class="card">
+  <a class="image-link" target="_blank" rel="noopener"><img class="thumb" alt="Imagem da notícia" loading="lazy"></a>
+  <div class="content">
+    <a class="title" target="_blank" rel="noopener"></a>
+    <p class="meta"></p>
+    <div class="share">
+      <button class="share-btn" data-platform="native" title="Compartilhar">Compartilhar</button>
+      <button class="share-btn" data-platform="whatsapp" title="WhatsApp">WhatsApp</button>
+      <button class="share-btn" data-platform="telegram" title="Telegram">Telegram</button>
+      <button class="share-btn" data-platform="x" title="X">X</button>
+      <button class="share-btn" data-platform="facebook" title="Facebook">Facebook</button>
+      <button class="share-btn" data-platform="linkedin" title="LinkedIn">LinkedIn</button>
+      <button class="share-btn" data-platform="reddit" title="Reddit">Reddit</button>
+      <button class="share-btn" data-platform="email" title="E-mail">E-mail</button>
+      <button class="share-btn" data-platform="copy" title="Copiar link">Copiar</button>
+    </div>
+    <small class="ig-note">Instagram não permite compartilhamento de links via web; use “Copiar”.</small>
+  </div>
+</article></template>
+<footer class="footer"><span>Atualizado automaticamente • Fallback estático instantâneo</span></footer>
+<script type="module" src="/app.js"></script>
+</body></html>
