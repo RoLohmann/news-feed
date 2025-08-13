@@ -1,17 +1,9 @@
 {
-  "name": "bolsonaro-feed",
-  "version": "1.3.1",
+  "name": "vozdobrasil-all-in-one",
+  "version": "2.3.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "netlify dev",
-    "debug:feeds": "node scripts/debug-feeds.mjs --days 90 --pattern bolsonaro --limit 3",
-    "build:static": "node scripts/build-static-news.mjs"
-  },
   "dependencies": {
     "fast-xml-parser": "^4.4.0"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }
