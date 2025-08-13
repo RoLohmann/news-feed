@@ -1,6 +1,15 @@
 const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
+  // Security: Validate origin
+  const allowedOrigins = [
+    "https://your-netlify-domain.netlify.app",
+    "http://localhost:3000"
+  ];
+  if (!allowedOrigins.includes(event.headers.origin)) {
+    return { statusCode: 403, body: 'Forbidden' };
+  }
+
   const article = JSON.parse(event.body);
   
   try {
@@ -9,7 +18,7 @@ exports.handler = async (event) => {
       'https://api-inference.huggingface.co/models/pierreguillou/gpt2-small-portuguese',
       {
         method: 'POST',
-        headers: { Authorization: 'Bearer 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' },
+        headers: { Authorization: `Bearer ${process.env.HF_TOKEN}` },
         body: JSON.stringify({
           inputs: `Escreva uma análise bolsonarista de 15 palavras sobre "${article.title}". Destaque aspectos positivos ou negativos para Bolsonaro:`,
           parameters: { 
@@ -27,7 +36,7 @@ exports.handler = async (event) => {
       {
         method: 'POST',
         headers: {
-          Authorization: 'Token r8_OPHaY5tqHFzKletRBPHPSa48j28UXgJ2EnYgd',
+          Authorization: `Token ${process.env.REPLICATE_TOKEN}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -47,6 +56,10 @@ exports.handler = async (event) => {
     
     return {
       statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': event.headers.origin
+      },
       body: JSON.stringify({
         analysis: textData[0]?.generated_text || "Análise não disponível",
         imageId: imageData.id

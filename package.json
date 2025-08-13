@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "fast-xml-parser": "^4.4.0"
+    "@netlify/functions": "^4.2.1",
+    "fast-xml-parser": "^4.4.0",
+    "node-fetch": "^2.7.0"
   }
 }
